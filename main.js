@@ -22,16 +22,16 @@ I will be syncing with this repository on my computer and pasting the code into 
 */
 
 async function startProgram() {
-	await SonStageOne()
-	await SonStageTwon()
-	await SonStageThree()
+	await SonStage1()
+	await SonStage2()
+	await SonStage3()
 	exitProgram()
 }
 
-async function SonStageOne(){
+async function SonStage1(){
 
 
-	let setpoint = 120; //Change to 2 tiles - Son
+	let setpoint = 180; //Change to 3 tiles - Son
 	let k = 2.0; 
 	let kD = 0.5;
 	let kI = 0.001;
@@ -88,22 +88,22 @@ async function SonStageOne(){
 
 }
 
-async function SonStageTwo(){
+async function SonStage2(){
 	//Indent - Son
-	//This is a hacky way to quickly do a point turn to 90 degrees.
+	//This is a hacky way to quickly do a point turn to 90 degree
 
 	//This function rolls the motors at a heading of 90, with a motor speed of 50, for 0.1 seconds.
-	await roll(90,50,0.1)
+	await roll(270,50,0.1)
 	//...and then this moves it back.
-	await roll(90,-50,0.1)
+	await roll(270,-50,0.1)
 }
 
 
-async function SonStageThree(){
+async function SonStage3(){
 
-	//Travel for 180 centimeters at a heading of 90 degrees
+	//Travel for 120 centimeters at a heading of 90 degrees
 
-	let setpoint = 180; //Change to 3 tiles - Son
+	let setpoint = 120; //Change to 2 tiles - Son
 	let k = 2.0;
 	let kD = 0.5;
 	let kI = 0.001;
