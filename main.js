@@ -1,7 +1,7 @@
 /* The code below is set up to demonstrate three functions that run on the Sphero RVR. Each function runs a single stage.
 
 
-Stage one: drive forward three VEX field tiles (120 cm) using a PID algorithm at a heading of 90 degrees.
+Stage one: drive forward three VEX field tiles (180 cm) using a PID algorithm at a heading of 90 degrees.
 Note: This uses the y-coordinate of the robot as the setpoint.
 
 Stage two - make a 90 degree turn using Weinberg's hacky method that also happens to work really well.
@@ -31,7 +31,7 @@ async function startProgram() {
 async function stageOne(){
 
 
-	let setpoint = 180;
+	let setpoint = 120; //Change to 2 tiles
 	let k = 2.0;
 	let kD = 0.5;
 	let kI = 0.001;
@@ -92,18 +92,18 @@ async function stageTwo(){
 
 //This is a hacky way to quickly do a point turn to 90 degrees.
 
-//This function rolls the motors at a heading of 90, with a motor speed of 50, for 0.1 seconds.
-await roll(90,50,0.1)
-//...and then this moves it back.
-await roll(90,-50,0.1)
+	//This function rolls the motors at a heading of 90, with a motor speed of 50, for 0.1 seconds.
+	await roll(90,50,0.1)
+	//...and then this moves it back.
+	await roll(90,-50,0.1)
 }
 
 
 async function stageThree(){
 
-	//Travel for eighty centimeters at a heading of 90 degrees
+	//Travel for eighty centimeters at a heading of 45 degrees
 
-	let setpoint = 120;
+	let setpoint = 80; //Change to 80 to match the comment and also change to 45 degrees
 	let k = 2.0;
 	let kD = 0.5;
 	let kI = 0.001;
@@ -140,7 +140,7 @@ async function stageThree(){
 		}
 		//We want all of this to be happening at a heading of 90 degrees
 
-		await roll(90,output,0.2);
+		await roll(45,output,0.2);
 
 		await delay(0.025);
 		//If our error is less than 2.0 cm, keep track of how long that has been the case.
