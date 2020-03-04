@@ -22,16 +22,24 @@ I will be syncing with this repository on my computer and pasting the code into 
 */
 
 async function startProgram() {
-	await stageOne()
-	await stageTwo()
-	await stageThree()
+	//Jake' Movement Here (Stage 1):
+	await JakeStage1()
+	await JakeStage2()
+	await JakeStage3()
+	//Jaden's Movement Here (Stage 2):
+	await JadenStage1()
+	await JadenStage2()
+	await JadenStage3()
+	await JadenStage4()
+
+	//Other People's Movement Here:
 	exitProgram()
 }
 
-async function stageOne(){
+async function JakeStage1(){
 
 
-	let setpoint = 180;
+	let setpoint = 240;
 	let k = 2.0;
 	let kD = 0.5;
 	let kI = 0.001;
@@ -39,7 +47,7 @@ async function stageOne(){
 	var oldError = 0;
 	var successTimer = 0.0;
 	var maxSpeed = 100;
-
+	var directionSign = 1; //-1 for moving left or down, 1 for moving right or up
 	var stageComplete = false;
 
 	//Visual feedback to know which stage we are on
@@ -50,7 +58,7 @@ async function stageOne(){
 		var location = getLocation().y;
 
 		//Use a PID algorithm to set the position of the robot
-		var error = setpoint - location;
+		var error = directionSign*(setpoint - location);
 		var changeError = error - oldError;
 		accumulatedError = error + accumulatedError
 
@@ -88,7 +96,7 @@ async function stageOne(){
 
 }
 
-async function stageTwo(){
+async function JakeStage2(){
 
 //This is a hacky way to quickly do a point turn to 90 degrees.
 
@@ -99,11 +107,11 @@ await roll(90,-50,0.1)
 }
 
 
-async function stageThree(){
+async function JakeStage3(){
 
 	//Travel for eighty centimeters at a heading of 90 degrees
 
-	let setpoint = 120;
+	let setpoint = 300;
 	let k = 2.0;
 	let kD = 0.5;
 	let kI = 0.001;
@@ -111,7 +119,7 @@ async function stageThree(){
 	var oldError = 0;
 	var successTimer = 0.0;
 	var maxSpeed = 100;
-
+	var directionSign = 1; //-1 for moving left or down, 1 for moving right or up
 	stageComplete = false;
 
 	await setMainLed({r:0,g:0,b:255})
@@ -121,7 +129,7 @@ async function stageThree(){
 		var location = getLocation().x;
 
 		//Use a PID algorithm to set the position of the robot
-		var error = setpoint - location;
+		var error = directionSign*(setpoint - location);
 		var changeError = error - oldError;
 		accumulatedError = error + accumulatedError
 
@@ -142,15 +150,166 @@ async function stageThree(){
 
 		await roll(90,output,0.2);
 
-		await delay(0.025);
-		//If our error is less than 2.0 cm, keep track of how long that has been the case.
 		if(error < 2.0){
-			successTimer += 0.025;
+			successTimer += 0.1;
+
 		}
+
 		//If the error has been less than 2.0 cm for more than half a second, finish the stage.
 		if(successTimer > 0.5){
 			stageComplete = true
 		}
+
+		await delay(0.025);
+		//If our error is less than 1.0 cm, keep track of how long that has been the case.
+
+	}
+
+}
+async function JadenStage1(){
+
+
+//This is a hacky way to quickly do a point turn to 90 degrees.
+
+//This function rolls the motors at a heading of 90, with a motor speed of 50, for 0.1 seconds.
+await roll(180,50,0.1)
+//...and then this moves it back.
+await roll(180,-50,0.1)
+}
+
+async function JadenStage2(){
+
+
+	let setpoint = 180;
+
+	let k = 2.0;
+	let kD = 0.5;
+	let kI = 0.001;
+	var accumulatedError = 0;
+	var oldError = 0;
+	var successTimer = 0.0;
+	var maxSpeed = 100;
+	var directionSign = -1; //-1 for moving left or down, 1 for moving right or up
+
+	var stageComplete = false;
+
+	//Visual feedback to know which stage we are on
+	await setMainLed({r:255,g:0,b:0})
+
+	while(stageComplete != true){
+		//get the current location of the robot.
+		var location = getLocation().y;
+
+		//Use a PID algorithm to set the position of the robot
+		var error = directionSign*(setpoint - location);
+		var changeError = error - oldError;
+		accumulatedError = error + accumulatedError
+
+
+		var output = k*error - kD*changeError + kI*accumulatedError;
+		oldError = error
+
+		if(output >maxSpeed){
+
+			output = maxSpeed;
+
+		}
+		if(output < -255){
+
+			output = -maxSpeed;
+		}
+
+		//This function rolls the motors at a heading of 0, with a motor speed of output, for 0.2 seconds.
+		await roll(180,output,0.2);
+
+		if(error < 2.0){
+			successTimer += 0.1;
+
+		}
+
+		//If the error has been less than 2.0 cm for more than half a second, finish the stage.
+		if(successTimer > 0.5){
+			stageComplete = true
+		}
+
+		await delay(0.025);
+		//If our error is less than 1.0 cm, keep track of how long that has been the case.
+
+
+	}
+
+}
+
+async function JadenStage3(){
+
+//This is a hacky way to quickly do a point turn to 90 degrees.
+
+//This function rolls the motors at a heading of 90, with a motor speed of 50, for 0.1 seconds.
+await roll(270,-50,0.1)
+//...and then this moves it back.
+await roll(270,50,0.1)
+}
+
+async function JadenStage4(){
+
+	//Travel for eighty centimeters at a heading of 90 degrees
+
+	let setpoint = 180; //drive for 3 tiles
+
+	let k = 2.0;
+	let kD = 0.5;
+	let kI = 0.001;
+	var accumulatedError = 0;
+	var oldError = 0;
+	var successTimer = 0.0;
+	var maxSpeed = 100;
+	var directionSign = -1; //-1 for moving left or down, 1 for moving right or up
+
+	var stageComplete = false;
+
+	//Visual feedback to know which stage we are on
+	await setMainLed({r:255,g:0,b:0})
+
+	while(stageComplete != true){
+		//get the current location of the robot.
+		var location = getLocation().x;
+
+		//Use a PID algorithm to set the position of the robot
+		var error = directionSign*(setpoint - location);
+		var changeError = error - oldError;
+		accumulatedError = error + accumulatedError
+
+
+		var output = k*error - kD*changeError + kI*accumulatedError;
+		oldError = error
+
+		if(output >maxSpeed){
+
+			output = maxSpeed;
+
+		}
+		if(output < -255){
+
+			output = -maxSpeed;
+		}
+
+		//This function rolls the motors at a heading of 0, with a motor speed of output, for 0.2 seconds.
+		await roll(270,output,0.2);
+
+		if(error < 2.0){
+			successTimer += 0.1;
+
+		}
+
+		//If the error has been less than 2.0 cm for more than half a second, finish the stage.
+		if(successTimer > 0.5){
+			stageComplete = true
+		}
+
+		await delay(0.025);
+		//If our error is less than 1.0 cm, keep track of how long that has been the case.
+
+
 	}
 
 }
