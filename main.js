@@ -22,23 +22,23 @@ I will be syncing with this repository on my computer and pasting the code into 
 */
 
 async function startProgram() {
-	await stageOne()
-	await stageTwo()
-	await stageThree()
+	await SonStageOne()
+	await SonStageTwon()
+	await SonStageThree()
 	exitProgram()
 }
 
-async function stageOne(){
+async function SonStageOne(){
 
 
 	let setpoint = 120; //Change to 2 tiles - Son
-	let k = 2.0;
+	let k = 2.0; 
 	let kD = 0.5;
 	let kI = 0.001;
 	var accumulatedError = 0;
 	var oldError = 0;
 	var successTimer = 0.0;
-	var maxSpeed = 100;
+	var maxSpeed = 100; 
 
 	var stageComplete = false;
 
@@ -72,7 +72,7 @@ async function stageOne(){
 		await roll(0,output,0.2);
 
 		if(error < 2.0){
-			successTimer += 0.025; //Change to 0.025 to match the delay
+			successTimer += 0.025; //Change to 0.025 to match the delay - Son
 
 		}
 
@@ -88,7 +88,7 @@ async function stageOne(){
 
 }
 
-async function stageTwo(){
+async function SonStageTwo(){
 	//Indent - Son
 	//This is a hacky way to quickly do a point turn to 90 degrees.
 
@@ -99,11 +99,11 @@ async function stageTwo(){
 }
 
 
-async function stageThree(){
+async function SonStageThree(){
 
-	//Travel for eighty centimeters at a heading of 45 degrees
+	//Travel for 180 centimeters at a heading of 90 degrees
 
-	let setpoint = 80; //Change to 80 to match the comment and also change to 45 degrees
+	let setpoint = 180; //Change to 3 tiles - Son
 	let k = 2.0;
 	let kD = 0.5;
 	let kI = 0.001;
@@ -140,7 +140,7 @@ async function stageThree(){
 		}
 		//We want all of this to be happening at a heading of 90 degrees
 
-		await roll(45,output,0.2);
+		await roll(90,output,0.2);
 
 		await delay(0.025);
 		//If our error is less than 2.0 cm, keep track of how long that has been the case.
