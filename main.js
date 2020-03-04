@@ -31,7 +31,7 @@ async function startProgram() {
 async function stageOne(){
 
 
-	let setpoint = 120; //Change to 2 tiles
+	let setpoint = 120; //Change to 2 tiles - Son
 	let k = 2.0;
 	let kD = 0.5;
 	let kI = 0.001;
@@ -72,7 +72,7 @@ async function stageOne(){
 		await roll(0,output,0.2);
 
 		if(error < 2.0){
-			successTimer += 0.1;
+			successTimer += 0.025; //Change to 0.025 to match the delay
 
 		}
 
@@ -89,8 +89,8 @@ async function stageOne(){
 }
 
 async function stageTwo(){
-
-//This is a hacky way to quickly do a point turn to 90 degrees.
+	//Indent - Son
+	//This is a hacky way to quickly do a point turn to 90 degrees.
 
 	//This function rolls the motors at a heading of 90, with a motor speed of 50, for 0.1 seconds.
 	await roll(90,50,0.1)
