@@ -323,8 +323,11 @@ async function JadenStage4(){
 async function TungStage1(){
 
 	//Travel for (???) centimeters at a heading of 90 degrees
-
-	let setpoint = 250; //drive for 1 tiles to the left
+	//Rather than thinking about tiles, think about the coordinates of where you want the robot to be located.
+	//Based on your path planning document, you want the coordinates of the robot after Stage1 to be (4*60, 0.5*60).
+	//This is the middle of the tile where you put your orange dot in the path planning document.
+	//Does the setpoint you are using here match that coordinate?
+	let setpoint = 250; 
 
 	let k = 2.0;
 	let kD = 0.5;
@@ -333,6 +336,8 @@ async function TungStage1(){
 	var oldError = 0;
 	var successTimer = 0.0;
 	var maxSpeed = 100;
+	
+	//Check this direction sign based on what you have in the planning document.
 	var directionSign = -1; //-1 for moving left or down, 1 for moving right or up
 
 	var stageComplete = false;
