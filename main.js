@@ -23,31 +23,21 @@ I will be syncing with this repository on my computer and pasting the code into 
 
 async function startProgram() {
 	//Jake' Movement Here (Stage 1):
-	await JakeStage1()
-	await JakeStage2()
-	await JakeStage3()
-	//Jaden's Movement Here (Stage 2):
-	await JadenStage1()
-	await JadenStage2()
-	await JadenStage3()
-	await JadenStage4()
-	//Son's Movement:
-	await SonStage1()
-	await SonStage2()
-	await SonStage3()
-	//Tung's Movement Here (Stage 4):
-	await TungStage1()
-	await TungStage2()
-	await TungStage3()
-	//Other People's Movement Here:
-	
+	await EMWStage1()
+	await EMWStage2()
+	await EMWStage3()
+	await EMWStage4()
+	await EMWStage5()
+	await EMWStage6()
+	await EMWStage7()
+
 	exitProgram()
 }
 
-async function JakeStage1(){
+async function EMWStage1(){
+	//Travel to (0,30) at a heading of 0 degrees
 
-
-	let setpoint = 240;
+	let setpoint = 30;
 	let k = 2.0;
 	let kD = 0.5;
 	let kI = 0.001;
@@ -104,9 +94,9 @@ async function JakeStage1(){
 
 }
 
-async function JakeStage2(){
+async function EMWStage2(){
 
-//This is a hacky way to quickly do a point turn to 90 degrees.
+//Turn to a heading of 90 degrees.
 
 //This function rolls the motors at a heading of 90, with a motor speed of 50, for 0.1 seconds.
 await roll(90,50,0.1)
@@ -115,11 +105,12 @@ await roll(90,-50,0.1)
 }
 
 
-async function JakeStage3(){
+async function EMWStage3(){
 
-	//Travel for eighty centimeters at a heading of 90 degrees
+	//Travel to (60,30) at a heading of 90 degrees
+	//Make sure to change the heading at line 150!
 
-	let setpoint = 300;
+	let setpoint = 60;
 	let k = 2.0;
 	let kD = 0.5;
 	let kI = 0.001;
@@ -174,21 +165,22 @@ async function JakeStage3(){
 	}
 
 }
-async function JadenStage1(){
+async function EMWStage4(){
 
 
-//This is a hacky way to quickly do a point turn to 90 degrees.
+//Turn to a heading of 0 degrees
 
 //This function rolls the motors at a heading of 90, with a motor speed of 50, for 0.1 seconds.
-await roll(180,50,0.1)
+await roll(0,50,0.1)
 //...and then this moves it back.
-await roll(180,-50,0.1)
+await roll(0,-50,0.1)
 }
 
-async function JadenStage2(){
+async function EMWStage5(){
+	//Travel to (60,90) at a heading of 0 degrees
+	//Make sure to change the heading at line 223!
 
-
-	let setpoint = 180;
+	let setpoint = 90;
 
 	let k = 2.0;
 	let kD = 0.5;
@@ -197,7 +189,7 @@ async function JadenStage2(){
 	var oldError = 0;
 	var successTimer = 0.0;
 	var maxSpeed = 100;
-	var directionSign = -1; //-1 for moving left or down, 1 for moving right or up
+	var directionSign = 1; //-1 for moving left or down, 1 for moving right or up
 
 	var stageComplete = false;
 
@@ -228,7 +220,7 @@ async function JadenStage2(){
 		}
 
 		//This function rolls the motors at a heading of 0, with a motor speed of output, for 0.2 seconds.
-		await roll(180,output,0.2);
+		await roll(0,output,0.2);
 
 		if(error < 2.0){
 			successTimer += 0.1;
@@ -248,9 +240,9 @@ async function JadenStage2(){
 
 }
 
-async function JadenStage3(){
+async function EMWStage6(){
 
-//This is a hacky way to quickly do a point turn to 90 degrees.
+//Turn to a heading of 270 degrees
 
 //This function rolls the motors at a heading of 90, with a motor speed of 50, for 0.1 seconds.
 await roll(270,-50,0.1)
@@ -258,148 +250,12 @@ await roll(270,-50,0.1)
 await roll(270,50,0.1)
 }
 
-async function JadenStage4(){
+async function EMWStage7(){
 
-	//Travel for eighty centimeters at a heading of 90 degrees
+	//Travel to (0,90) at a heading of 270 degrees
+	//Make sure to change the heading at line 298!
 
-	let setpoint = 180; //drive for 3 tiles
-
-	let k = 2.0;
-	let kD = 0.5;
-	let kI = 0.001;
-	var accumulatedError = 0;
-	var oldError = 0;
-	var successTimer = 0.0;
-	var maxSpeed = 100;
-	var directionSign = -1; //-1 for moving left or down, 1 for moving right or up
-
-	var stageComplete = false;
-
-	//Visual feedback to know which stage we are on
-	await setMainLed({r:255,g:0,b:0})
-
-	while(stageComplete != true){
-		//get the current location of the robot.
-		var location = getLocation().x;
-
-		//Use a PID algorithm to set the position of the robot
-		var error = directionSign*(setpoint - location);
-		var changeError = error - oldError;
-		accumulatedError = error + accumulatedError
-
-
-		var output = k*error - kD*changeError + kI*accumulatedError;
-		oldError = error
-
-		if(output >maxSpeed){
-
-			output = maxSpeed;
-
-		}
-		if(output < -255){
-
-			output = -maxSpeed;
-		}
-
-		//This function rolls the motors at a heading of 0, with a motor speed of output, for 0.2 seconds.
-		await roll(270,output,0.2);
-
-		if(error < 2.0){
-			successTimer += 0.1;
-
-		}
-
-		//If the error has been less than 2.0 cm for more than half a second, finish the stage.
-		if(successTimer > 0.5){
-			stageComplete = true
-		}
-
-		await delay(0.025);
-		//If our error is less than 1.0 cm, keep track of how long that has been the case.
-
-
-	}
-
-}
-
-async function SonStage1(){
-	//This function rolls the motors at a heading of 90, with a motor speed of 50, for 0.1 seconds.
-	await roll(180,50,0.1)
-	//...and then this moves it back.
-	await roll(180,-50,0.1)
-}
-
-async function SonStage2(){
-	let setpoint = 120; //Move 2 tiles
-	let k = 2.0; 
-	let kD = 0.5;
-	let kI = 0.001;
-	var accumulatedError = 0;
-	var oldError = 0;
-	var successTimer = 0.0;
-	var maxSpeed = 100; 
-	var directionSign = -1
-
-	var stageComplete = false;
-
-	//Visual feedback to know which stage we are on
-	await setMainLed({r:255,g:0,b:0})
-
-	while(stageComplete != true){
-		//get the current location of the robot.
-		var location = getLocation().y;
-
-		//Use a PID algorithm to set the position of the robot
-		var error = directionSign * (setpoint - location);
-		var changeError = error - oldError;
-		accumulatedError = error + accumulatedError
-
-
-		var output = k*error - kD*changeError + kI*accumulatedError;
-		oldError = error
-
-		if(output >maxSpeed){
-
-			output = maxSpeed;
-
-		}
-		if(output < -255){
-
-			output = -maxSpeed;
-		}
-
-		//This function rolls the motors at a heading of 0, with a motor speed of output, for 0.2 seconds.
-		await roll(180,output,0.2);
-
-		if(error < 2.0){
-			successTimer += 0.025; //Change to 0.025 to match the delay - Son
-
-		}
-
-		//If the error has been less than 2.0 cm for more than half a second, finish the stage.
-		if(successTimer > 0.5){
-			stageComplete = true
-		}
-
-		await delay(0.025);
-		//If our error is less than 1.0 cm, keep track of how long that has been the case.
-
-	}
-
-}
-
-async function SonStage3(){
-	//This function rolls the motors at a heading of 90, with a motor speed of 50, for 0.1 seconds.
-	await roll(90,50,0.1)
-	//...and then this moves it back.
-	await roll(90,-50,0.1)
-}
-
-async function TungStage1(){
-
-	//Travel for (???) centimeters at a heading of 90 degrees
-
-	let setpoint = 250; //drive for 1 tiles to the left
+	let setpoint = 0; //drive for 3 tiles
 
 	let k = 2.0;
 	let kD = 0.5;
@@ -418,80 +274,6 @@ async function TungStage1(){
 	while(stageComplete != true){
 		//get the current location of the robot.
 		var location = getLocation().x;
-
-		//Use a PID algorithm to set the position of the robot
-		var error = directionSign*(setpoint - location);
-		var changeError = error - oldError;
-		accumulatedError = error + accumulatedError
-
-
-		var output = k*error - kD*changeError + kI*accumulatedError;
-		oldError = error
-
-		if(output >maxSpeed){
-
-			output = maxSpeed;
-
-		}
-		if(output < -255){
-
-			output = -maxSpeed;
-		}
-
-		//This function rolls the motors at a heading of 0, with a motor speed of output, for 0.2 seconds.
-		await roll(270,output,0.2);
-
-		if(error < 2.0){
-			successTimer += 0.1;
-
-		}
-
-		//If the error has been less than 2.0 cm for more than half a second, finish the stage.
-		if(successTimer > 0.5){
-			stageComplete = true
-		}
-
-		await delay(0.025);
-		//If our error is less than 1.0 cm, keep track of how long that has been the case.
-
-
-	}
-
-}
-
-async function TungStage2(){
-
-//This is a hacky way to quickly do a point turn to 90 degrees.
-
-//This function rolls the motors at a heading of 90, with a motor speed of 50, for 0.1 seconds.
-await roll(90,-50,0.1)
-//...and then this moves it back.
-await roll(270,50,0.1)
-}
-
-async function TungStage3(){
-
-	//Travel for (???) centimeters at a heading of 90 degrees
-
-	let setpoint = 0; //drive for 1 tiles downward
-
-	let k = 2.0;
-	let kD = 0.5;
-	let kI = 0.001;
-	var accumulatedError = 0;
-	var oldError = 0;
-	var successTimer = 0.0;
-	var maxSpeed = 100;
-	var directionSign = -1; //-1 for moving left or down, 1 for moving right or up
-
-	var stageComplete = false;
-
-	//Visual feedback to know which stage we are on
-	await setMainLed({r:255,g:0,b:0})
-
-	while(stageComplete != true){
-		//get the current location of the robot.
-		var location = getLocation().y;
 
 		//Use a PID algorithm to set the position of the robot
 		var error = directionSign*(setpoint - location);
