@@ -22,7 +22,6 @@ I will be syncing with this repository on my computer and pasting the code into 
 */
 
 async function startProgram() {
-
 	
  
 	exitProgram()
