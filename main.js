@@ -315,7 +315,7 @@ async function SonStage1(){
 }
   
 async function SonStage2(){
-	let setpoint = 120; 
+	let setpoint = 0; 
 	let k = 2.0; 
   let kD = 0.5;
 	let kI = 0.001;
@@ -354,7 +354,7 @@ async function SonStage2(){
 		}
 
 		//This function rolls the motors at a heading of 0, with a motor speed of output, for 0.2 seconds.
-		await roll(0,output,0.2);
+		await roll(180,output,0.2);
 
 		if(error < 2.0){
 			successTimer += 0.025; //Change to 0.025 to match the delay - Son
