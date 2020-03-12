@@ -22,16 +22,23 @@ I will be syncing with this repository on my computer and pasting the code into 
 */
 
 async function startProgram() {
-	Jake1()
-	Jake2()
-	Jake3()
-	JadenStage1()
-	JadenStage2()
-	JadenStage3()
-	JadenStage4()
-	SonStage1()
-	SonStage2()
-	SonStage3()
+	await Jake1()
+	await Jake2()
+	await Jake3()
+	
+	await JadenStage1()
+	await JadenStage2()
+	await JadenStage3()
+	await JadenStage4()
+	
+	await SonStage1()
+	await SonStage2()
+	await SonStage3()
+	
+	await TungStage1()
+	await TungStage2()
+	await TungStage3()
+	
 	exitProgram()
 }
 async function Jake1(){
@@ -105,7 +112,7 @@ await roll(90,-50,0.1)
 }
 
 
-async function Jake(){
+async function Jake3(){
 
 	let setpoint = 300;
 	let k = 2.0;
@@ -371,6 +378,139 @@ async function SonStage2(){
     await roll(270,50,0.1)
     //...and then this moves it back.
     await roll(270,-50,0.1)
+	 
+	 
 
  }
+
+async function TungStage1(){
+	//Travel to (240,0) at a heading of 90 degrees
+
+	let setpoint = 240;
+	let k = 2.0;
+	let kD = 0.5;
+	let kI = 0.001;
+	var accumulatedError = 0;
+	var oldError = 0;
+	var successTimer = 0.0;
+	var maxSpeed = 100;
+	var directionSign = 1; //-1 for moving left or down, 1 for moving right or up
+	var stageComplete = false;
+
+	//Visual feedback to know which stage we are on
+	await setMainLed({r:255,g:0,b:0})
+
+	while(stageComplete != true){
+		//get the current location of the robot.
+		var location = getLocation().x;
+
+		//Use a PID algorithm to set the position of the robot
+		var error = directionSign*(setpoint - location);
+		var changeError = error - oldError;
+		accumulatedError = error + accumulatedError
+
+
+		var output = k*error - kD*changeError + kI*accumulatedError;
+		oldError = error
+
+		if(output >maxSpeed){
+
+			output = maxSpeed;
+
+		}
+		if(output < -255){
+
+			output = -maxSpeed;
+		}
+
+		//This function rolls the motors at a heading of 0, with a motor speed of output, for 0.2 seconds.
+		await roll(90,output,0.2);
+
+		if(error < 2.0){
+			successTimer += 0.1;
+
+		}
+
+		//If the error has been less than 2.0 cm for more than half a second, finish the stage.
+		if(successTimer > 0.5){
+			stageComplete = true
+		}
+
+		await delay(0.025);
+		//If our error is less than 1.0 cm, keep track of how long that has been the case.
+
+	}
+
+}
+
+async function TungStage2(){
+
+//Turn to a heading of 180 degrees.
+
+//This function rolls the motors at a heading of 90, with a motor speed of 50, for 0.1 seconds.
+await roll(180,50,0.1)
+//...and then this moves it back.
+await roll(180,-50,0.1)
+}
+
+
+async function TungStage3(){
+
+	//Travel to (240,-60) at a heading of 180 degrees
+
+	let setpoint = -60;
+	let k = 2.0;
+	let kD = 0.5;
+	let kI = 0.001;
+	var accumulatedError = 0;
+	var oldError = 0;
+	var successTimer = 0.0;
+	var maxSpeed = 100;
+	var directionSign = -1; //-1 for moving left or down, 1 for moving right or up
+	stageComplete = false;
+
+	await setMainLed({r:0,g:0,b:255})
+
+	while(stageComplete != true){
+		//get the current location of the robot. Note that this uses the x-coordinate this time, not y.
+		var location = getLocation().y;
+
+		//Use a PID algorithm to set the position of the robot
+		var error = directionSign*(setpoint - location);
+		var changeError = error - oldError;
+		accumulatedError = error + accumulatedError
+
+
+		var output = k*error - kD*changeError + kI*accumulatedError;
+		oldError = error
+
+		if(output > maxSpeed){
+
+			output = maxSpeed;
+
+		}
+		if(output < -maxSpeed){
+
+			output = -maxSpeed;
+		}
+		//We want all of this to be happening at a heading of 90 degrees
+
+		await roll(180,output,0.2);
+
+		if(error < 2.0){
+			successTimer += 0.1;
+
+		}
+
+		//If the error has been less than 2.0 cm for more than half a second, finish the stage.
+		if(successTimer > 0.5){
+			stageComplete = true
+		}
+
+		await delay(0.025);
+		//If our error is less than 1.0 cm, keep track of how long that has been the case.
+
+	}
+
+}
 
