@@ -22,9 +22,8 @@ I will be syncing with this repository on my computer and pasting the code into 
 */
 
 async function startProgram() {
-  await SonStage1()
-	await SonStage2()
-	await SonStage3()
+
+	
  
 	exitProgram()
 }
@@ -48,7 +47,7 @@ async function SonStage2(){
 	var successTimer = 0.0;
 
 	var maxSpeed = 100;
-	var directionSign = 1; //-1 for moving left or down, 1 for moving right or up
+	var directionSign = -1; //-1 for moving left or down, 1 for moving right or up
 
 	var stageComplete = false;
 
