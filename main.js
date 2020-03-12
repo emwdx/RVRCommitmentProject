@@ -217,7 +217,7 @@ async function JadenStage2(){
 		}
 
 		//This function rolls the motors at a heading of 0, with a motor speed of output, for 0.2 seconds.
-		await roll(0,output,0.2);
+		await roll(180,output,0.2);
 
 		if(error < 2.0){
 			successTimer += 0.1;
@@ -287,7 +287,7 @@ async function JadenStage4(){
 		}
 
 		//This function rolls the motors at a heading of 0, with a motor speed of output, for 0.2 seconds.
-		await roll(0,output,0.2);
+		await roll(270,output,0.2);
 
 		if(error < 2.0){
 			successTimer += 0.1;
