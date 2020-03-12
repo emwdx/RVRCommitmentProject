@@ -265,7 +265,7 @@ async function JadenStage4(){
 
 	while(stageComplete != true){
 		//get the current location of the robot.
-		var location = getLocation().y;
+		var location = getLocation().x;
 
 		//Use a PID algorithm to set the position of the robot
 		var error = directionSign*(setpoint - location);
@@ -286,7 +286,7 @@ async function JadenStage4(){
 			output = -maxSpeed;
 		}
 
-		//This function rolls the motors at a heading of 0, with a motor speed of output, for 0.2 seconds.
+		//This function rolls the motors at a heading of 270, with a motor speed of output, for 0.2 seconds.
 		await roll(270,output,0.2);
 
 		if(error < 2.0){
