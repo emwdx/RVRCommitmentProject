@@ -37,9 +37,7 @@ async function SonStage1(){
 }
 
 async function SonStage2(){
-	//based on your part of the path planning document, you want to stop the robot in the middle of the the tile next to the southern tower.
-	//If y = 0 at the starting line of the robot, this is a y-coordinate of 30, no?
-	let setpoint = 30; 
+	let setpoint = 120; 
 	let k = 2.0; 
 
 	let kD = 0.5;
