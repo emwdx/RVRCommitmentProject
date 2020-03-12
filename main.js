@@ -22,30 +22,33 @@ I will be syncing with this repository on my computer and pasting the code into 
 */
 
 async function startProgram() {
-	await SonStage1()
+  await SonStage1()
 	await SonStage2()
 	await SonStage3()
+ 
 	exitProgram()
 }
 
 
 async function SonStage1(){
-	//This function rolls the motors at a heading of 270, with a motor speed of 50, for 0.1 seconds.
-	await roll(270,50,0.1)
+	//This function rolls the motors at a heading of 180, with a motor speed of 50, for 0.1 seconds.
+	await roll(180,50,0.1)
 	//...and then this moves it back.
-	await roll(270,-50,0.1)
+	await roll(180,-50,0.1)
 }
 
 async function SonStage2(){
 	let setpoint = 120; //Move 2 tiles
 	let k = 2.0; 
+
 	let kD = 0.5;
 	let kI = 0.001;
 	var accumulatedError = 0;
 	var oldError = 0;
 	var successTimer = 0.0;
-	var maxSpeed = 100; 
-	var directionSign = -1
+
+	var maxSpeed = 100;
+	var directionSign = 1; //-1 for moving left or down, 1 for moving right or up
 
 	var stageComplete = false;
 
